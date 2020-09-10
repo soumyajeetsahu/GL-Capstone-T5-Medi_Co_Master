@@ -6,12 +6,14 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Medi-Co</title>
-  <meta content="" name="descriptison">
+  <meta content="" name="description">
   <meta content="" name="keywords">
 
   <!-- Favicons -->
   <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
   <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -37,7 +39,7 @@
     <div class="container d-flex">
       <div class="contact-info mr-auto">
         <i class="icofont-envelope"></i> <a href="mailto:contact@example.com">medi_co@gmail.com</a>
-        <i class="icofont-phone"></i> +1 5589 55488 55
+        <i class="icofont-phone"></i> +91 9876543210
 <!--        <i class="icofont-google-map"></i> A108 Adam Street, NY-->
       </div>
       <div class="social-links">
@@ -60,7 +62,7 @@
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li class="active"><a href="index.html">Home</a></li>
+          <li class="active"><a href="home">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#departments">Departments</a></li>
@@ -172,25 +174,6 @@
                 healthcare domain who want to change the way healthcare is delivered.
                 We dream to create an ecosystem for patients to seamlessly access healthcare services.</p>
               <div class="text-center"><button class="btn appointment-btn" type="submit">Know about us</button></div>
-<!--          &#45;&#45;&#45;&#45;Commented in about us part -->
-<!--            <div class="icon-box">-->
-<!--              <div class="icon"><i class="bx bx-fingerprint"></i></div>-->
-<!--              <h4 class="title"><a href="">General Physicians</a></h4>-->
-<!--              <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>-->
-<!--            </div>-->
-
-<!--            <div class="icon-box">-->
-<!--              <div class="icon"><i class="bx bx-gift"></i></div>-->
-<!--              <h4 class="title"><a href="">Nemo Enim</a></h4>-->
-<!--              <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>-->
-<!--            </div>-->
-
-<!--            <div class="icon-box">-->
-<!--              <div class="icon"><i class="bx bx-atom"></i></div>-->
-<!--              <h4 class="title"><a href="">Dine Pad</a></h4>-->
-<!--              <p class="description">Explicabo est voluptatum asperiores consequatur magnam. Et veritatis odit. Sunt aut deserunt minus aut eligendi omnis</p>-->
-<!--            </div>-->
-
           </div>
         </div>
 
@@ -313,39 +296,36 @@
 
         <div class="section-title">
           <h2>Make an Appointment</h2>
-<!--          <p>Magnam dolores commodi suscipit. -->
-<!--          Necessitatibus eius consequatur ex aliquid fuga eum quidem. -->
-<!--          Sit sint consectetur velit. Quisquam quos quisquam cupiditate.-->
-<!--           Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>-->
         </div>
 
-        <form action="forms/appointment.php" method="post" role="form" class="php-email-form">
+        <form action="{% url 'home' %}" method="post" id="php_email_form" class="php-email-form">
+          {% csrf_token %}
           <div class="form-row">
             <div class="col-md-4 form-group">
-              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+
+              {{form.Name}}
+<!--              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name"-->
+<!--                     data-rule="minlen:4" data-msg="Please enter at least 4 chars">-->
               <div class="validate"></div>
             </div>
             <div class="col-md-4 form-group">
-              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
+              {{form.email}}
+<!--              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">-->
               <div class="validate"></div>
             </div>
             <div class="col-md-4 form-group">
-              <input type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+              {{form.phnumber}}
+<!--              <input type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" data-rule="minlen:4" data-msg="Please enter at least 4 chars">-->
               <div class="validate"></div>
             </div>
           </div>
           <div class="form-row">
             <div class="col-md-4 form-group">
-              <input type="datetime" name="date" class="form-control datepicker" id="date" placeholder="Appointment Date" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+              {{form.appointment_date}}
               <div class="validate"></div>
             </div>
             <div class="col-md-4 form-group">
-              <select name="department" id="department" class="form-control">
-                <option value="">Select Department</option>
-                <option value="Department 1">Department 1</option>
-                <option value="Department 2">Department 2</option>
-                <option value="Department 3">Department 3</option>
-              </select>
+{{form.department}}
               <div class="validate"></div>
             </div>
             <div class="col-md-4 form-group">
@@ -359,15 +339,19 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)"></textarea>
-            <div class="validate"></div>
-          </div>
+<!--          <div class="form-group">-->
+<!--            <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)"></textarea>-->
+<!--            <div class="validate"></div>-->
+<!--          </div>-->
           <div class="mb-3">
             <div class="loading">Loading</div>
-            <div class="error-message"></div>
-            <div class="sent-message">Your appointment request has been sent successfully. Thank you!</div>
+<!--            <div class="error-message"></div>-->
+<!--            {% if submitted %}-->
+<!--            {% endif %}-->
           </div>
+      <div  class="message-app">
+
+      </div>
           <div class="text-center"><button type="submit">Make an Appointment</button></div>
         </form>
 
@@ -622,82 +606,6 @@
       </div>
     </section><!-- End Frequently Asked Questions Section -->
 
-    <!-- ======= Testimonials Section ======= -->
-<!--    <section id="testimonials" class="testimonials">-->
-<!--      <div class="container">-->
-
-<!--        <div class="owl-carousel testimonials-carousel">-->
-
-<!--          <div class="testimonial-wrap">-->
-<!--            <div class="testimonial-item">-->
-<!--              <img src="{% static 'assets/img/testimonials/testimonials-1.jpg' %}" class="testimonial-img" alt="">-->
-<!--              <h3>Saul Goodman</h3>-->
-<!--              <h4>Ceo &amp; Founder</h4>-->
-<!--              <p>-->
-<!--                <i class="bx bxs-quote-alt-left quote-icon-left"></i>-->
-<!--                Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.-->
-<!--                <i class="bx bxs-quote-alt-right quote-icon-right"></i>-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="testimonial-wrap">-->
-<!--            <div class="testimonial-item">-->
-<!--              <img src="{% static 'assets/img/testimonials/testimonials-2.jpg' %}" class="testimonial-img" alt="">-->
-<!--              <h3>Sara Wilsson</h3>-->
-<!--              <h4>Designer</h4>-->
-<!--              <p>-->
-<!--                <i class="bx bxs-quote-alt-left quote-icon-left"></i>-->
-<!--                Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.-->
-<!--                <i class="bx bxs-quote-alt-right quote-icon-right"></i>-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="testimonial-wrap">-->
-<!--            <div class="testimonial-item">-->
-<!--              <img src="{% static 'assets/img/testimonials/testimonials-3.jpg' %}" class="testimonial-img" alt="">-->
-<!--              <h3>Jena Karlis</h3>-->
-<!--              <h4>Store Owner</h4>-->
-<!--              <p>-->
-<!--                <i class="bx bxs-quote-alt-left quote-icon-left"></i>-->
-<!--                Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.-->
-<!--                <i class="bx bxs-quote-alt-right quote-icon-right"></i>-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="testimonial-wrap">-->
-<!--            <div class="testimonial-item">-->
-<!--              <img src="{% static 'assets/img/testimonials/testimonials-4.jpg' %}" class="testimonial-img" alt="">-->
-<!--              <h3>Matt Brandon</h3>-->
-<!--              <h4>Freelancer</h4>-->
-<!--              <p>-->
-<!--                <i class="bx bxs-quote-alt-left quote-icon-left"></i>-->
-<!--                Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.-->
-<!--                <i class="bx bxs-quote-alt-right quote-icon-right"></i>-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="testimonial-wrap">-->
-<!--            <div class="testimonial-item">-->
-<!--              <img src="{% static 'assets/img/testimonials/testimonials-5.jpg' %}" class="testimonial-img" alt="">-->
-<!--              <h3>John Larson</h3>-->
-<!--              <h4>Entrepreneur</h4>-->
-<!--              <p>-->
-<!--                <i class="bx bxs-quote-alt-left quote-icon-left"></i>-->
-<!--                Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.-->
-<!--                <i class="bx bxs-quote-alt-right quote-icon-right"></i>-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--        </div>-->
-
-<!--      </div>-->
-<!--    </section>&lt;!&ndash; End Testimonials Section &ndash;&gt;-->
-
     <!-- ======= Gallery Section ======= -->
     <section id="gallery" class="gallery">
       <div class="container">
@@ -812,7 +720,7 @@
               <div class="phone">
                 <i class="icofont-phone"></i>
                 <h4>Call:</h4>
-                <p>+1 5589 55488 55s</p>
+                <p>+91 9876543210s</p>
               </div>
 
             </div>
@@ -870,7 +778,7 @@
               A108 Kondapur <br>
               Hyderabad, 500084<br>
               Telangana <br><br>
-              <strong>Phone:</strong> +1 5589 55488 55<br>
+              <strong>Phone:</strong> +91 9876543210<br>
               <strong>Email:</strong> medi_co@gmail.com<br>
             </p>
           </div>
@@ -928,7 +836,7 @@
     </div>
   </footer><!-- End Footer -->
 
-  <div id="preloader"></div>
+
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
   <!-- Vendor JS Files -->
@@ -944,7 +852,25 @@
 
   <!-- Template Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
-
+  <script type="text/javascript">
+$('#php_email_form').submit(function(e){
+e.preventDefault();
+var frm = $('#php_email_form');
+     $.ajax({
+        type: frm.attr('method'),
+         url: frm.attr('action'),
+         data: frm.serialize(),
+         dataType: 'json',
+        success:function(data){
+          $(".mb-3").html('<div style="color: #fff;background: #18d26e;text-align: center;padding: 10px;font-weight: 600;"> <p> Appointment successfully booked for ' + data.name +' on '+ data.date+ '.</p></div>')
+        },
+        error : function(xhr,errmsg,err) {
+        alert(errmsg);
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+    }
+    });
+});
+</script>
 </body>
 
 </html>
