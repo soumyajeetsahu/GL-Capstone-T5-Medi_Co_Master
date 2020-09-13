@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render
 from Medical.static.forms.appointment import AppointmentForm
 
+
 def home_view(request):
     if request.method == 'POST':
         form = AppointmentForm(request.POST)
@@ -40,12 +41,5 @@ def doctor_view(request):
     return render(request, 'medical/doctors.html', {'form': form})
 
 
-def submit_appointment(request):
-    if request.method == 'POST':
-        form = AppointmentForm(request.POST)
-        if form.is_valid():
-            app_date = request.POST.get("appointment_date", None)
-            responseData = [{
-                'Name': 'My Name'
-            }]
-            return JsonResponse({'responseData':responseData}, safe=False)
+def lab_tests(request):
+    return render(request, 'medical/labtests.html')

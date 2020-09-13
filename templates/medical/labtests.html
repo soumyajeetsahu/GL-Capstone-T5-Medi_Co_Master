@@ -1,0 +1,209 @@
+{% extends 'medical/base.html' %}
+{% block 'body' %}
+{% load static %}
+
+<style>
+.labs {
+  background: #fff;
+  padding-top: 5rem;
+}
+
+[class*="col-"] {
+  margin-bottom: 30px;
+}
+img {
+    width: 200px; /* You can set the dimensions to whatever you want */
+    height: 200px;
+    object-fit: cover;
+}
+.labs .member {
+  box-shadow: 0px 2px 15px rgba(44, 73, 100, 0.08);
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.labs .member .pic {
+  overflow: hidden;
+  width: 200px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 70%;
+}
+
+.labs .member .pic img {
+  transition: ease-in-out 0.3s;
+
+}
+
+.labs .member:hover img {
+  transform: scale(1.1);
+}
+
+.labs .member .member-info {
+  padding-left: 30px;
+}
+
+.labs .member h4 {
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-size: 15px;
+  color: #2c4964;
+}
+
+.labs .member span {
+  display: block;
+  font-size: 10px;
+  padding-bottom: 10px;
+  position: relative;
+  font-weight: 500;
+}
+
+.labs .member span::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 1px;
+  background: #b2c8dd;
+  bottom: 0;
+  left: 0;
+}
+
+.labs .member p {
+  margin: 10px 0 0 0;
+  font-size: 14px;
+}
+
+.labs .member .social {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.labs .member .social a {
+  transition: ease-in-out 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  width: 32px;
+  height: 32px;
+  background: #a0bcd5;
+}
+
+.labs .member .social a i {
+  color: #fff;
+  font-size: 16px;
+  margin: 0 2px;
+}
+
+.labs .member .social a:hover {
+  background: #1977cc;
+}
+
+.labs .member .social a + a {
+  margin-left: 8px;
+}
+@media (min-width: 768px) {
+  .row.equal {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.btn-labs{
+  padding-top:5px;
+}
+
+.text-muted{
+  align:right;
+  color: #fff;
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+</style>
+
+  <section id="labs" class="labs" >
+      <div class="container">
+
+        <div class="section-title">
+          <h2><a href="{% url 'lab_tests' %}">Labs</a></h2>
+           </div>
+
+        <div class="row equal">
+
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="member d-flex align-items-start">
+              <div class="pic">
+                <img src="{% static 'assets/img/labs/full-body-checkup.jpg' %}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Complete Health Check-Up</h4>
+                <span>47 essential body parameters like Thyroid, Liver, Kidney, Blood, Sugar, Cholesterol.</span>
+                <div class="btn-labs">
+                <button type="button" class="btn btn-primary btn-sm"> View </button>
+                  <small class="text-muted">1099</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="member d-flex align-items-start">
+              <div class="pic"><img src="{% static 'assets/img/labs/lipid-blood-test.png' %}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Lipid profile</h4>
+                <span>Blood tests that serves as an initial screening tool
+                  for abnormalities in lipids, such as cholesterol and triglycerides</span>
+                <div class="btn-labs">
+                <button type="button" class="btn btn-primary btn-sm"> View </button>
+                  <small class="text-muted">499</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="member d-flex align-items-start">
+              <div class="pic"><img src="{% static 'assets/img/labs/ecg.png' %}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Electrocardiography</h4>
+                <span>An electrocardiogram records the electrical signal from your heart to check for different heart conditions. </span>
+                <div class="btn-labs">
+                <button type="button" class="btn btn-primary btn-sm"> View </button>
+                  <small class="text-muted">499</small>
+                </div>
+                </div>
+              </div>
+            </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="member d-flex align-items-start">
+              <div class="pic">
+                <img src="{% static 'assets/img/labs/liver-function-test.png' %}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Liver Function Test</h4>
+                <span>Provide information about the state of a patient's liver.
+                   Includes prothrombin time,albumin,bilirubin</span>
+                <div class="btn-labs">
+                <button type="button" class="btn btn-primary btn-sm"> View </button>
+                  <small class="text-muted">599</small>
+                </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+{% endblock %}
