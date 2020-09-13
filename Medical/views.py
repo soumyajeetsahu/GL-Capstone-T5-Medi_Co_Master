@@ -43,3 +43,10 @@ def doctor_view(request):
 
 def lab_tests(request):
     return render(request, 'medical/labtests.html')
+
+def Login(request):
+    return render(request, 'medical/Login.html')
+
+
+def registration(request):
+    return render(request, 'medical/registration.html')
