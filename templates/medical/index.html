@@ -237,16 +237,12 @@
           {% csrf_token %}
           <div class="form-row">
             <div class="col-md-4 form-group">
-
               {{form.Name}}
-<!--              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name"-->
-<!--                     data-rule="minlen:4" data-msg="Please enter at least 4 chars">-->
               <div class="validate"></div>
             </div>
             <div class="col-md-4 form-group">
               {{form.email}}
-<!--              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">-->
-              <div class="validate"></div>
+            <div class="validate"></div>
             </div>
             <div class="col-md-4 form-group">
               {{form.phnumber}}
@@ -260,7 +256,7 @@
               <div class="validate"></div>
             </div>
             <div class="col-md-4 form-group">
-{{form.department}}
+            {{form.department}}
               <div class="validate"></div>
             </div>
             <div class="col-md-4 form-group">

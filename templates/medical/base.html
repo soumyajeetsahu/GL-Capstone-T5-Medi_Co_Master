@@ -157,10 +157,11 @@ var frm = $('#php_email_form');
          dataType: 'json',
         success:function(data){
           $(".mb-4").html('<div style="color: #fff;background: #18d26e;text-align: center;padding: 10px;font-weight: 600;"> <p> Appointment successfully booked for ' + data.name +' on '+ data.date+ '.</p></div>')
+          document.getElementById("php_email_form").reset();
         },
         error : function(xhr,errmsg,err) {
         alert(errmsg);
-        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        console.log(xhr.status + ": " + xhr.responseText);
     }
     });
 });
