@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render
+
+from Medical.models import Doctors
 from Medical.static.forms.appointment import AppointmentForm
 
 
@@ -18,8 +20,8 @@ def home_view(request):
             return JsonResponse(responseData, safe=False)
     else:
         form = AppointmentForm()
-
-    return render(request, 'medical/index.html', {'form': form})
+        doctors = Doctors.objects.order_by('doctor_name')
+    return render(request, 'medical/index.html', {'form': form, 'doctors': doctors})
 
 
 def doctor_view(request):
@@ -44,9 +46,17 @@ def doctor_view(request):
 def lab_tests(request):
     return render(request, 'medical/labtests.html')
 
+
 def Login(request):
     return render(request, 'medical/Login.html')
 
 
 def registration(request):
     return render(request, 'medical/registration.html')
+
+
+def load_doctors(request):
+    dept_id = request.GET.get('Departments')
+    doctors = Doctors.objects.filter(department_id=dept_id).order_by('doctor_name')
+    # return JsonResponse(doctors, safe=False)
+    return render(request, 'medical/load_doctors.html', {'doctors': doctors})

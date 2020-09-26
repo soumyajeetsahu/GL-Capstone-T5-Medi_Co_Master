@@ -1,8 +1,33 @@
 from django.db import models
 from django.core.validators import RegexValidator
 
-# Create your models here.
 from Medical.enum import Department
+
+
+class Labs(models.Model):
+    image = models.ImageField()
+    name = models.CharField(max_length=255)
+    price = models.IntegerField()
+
+
+class Departments(models.Model):
+    dept_id = models.IntegerField(primary_key=True)
+    dept_name = models.CharField(max_length=100)
+    dept_desc = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return "%s" % self.dept_name
+
+
+class Doctors(models.Model):
+    doctor_id = models.IntegerField(primary_key=True)
+    doctor_name = models.CharField(max_length=60)
+    experience = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='Medical/static/assets/img/doctors/')
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "%s" % self.doctor_name
 
 
 class Appointment(models.Model):
@@ -11,12 +36,11 @@ class Appointment(models.Model):
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                                  message="Phone number must be entered in the format: '+999999999'. Up to 10 digits allowed.")
     phnumber = models.CharField(validators=[phone_regex], max_length=10)
-    department = models.CharField(max_length=255, choices=Department.choices(), default=0)
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE)
     appointment_date = models.DateField()
-    doctor = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "%s" % self.Name
 
 
-class Labs(models.Model):
-    image = models.ImageField()
-    name = models.CharField(max_length=255)
-    price = models.IntegerField()

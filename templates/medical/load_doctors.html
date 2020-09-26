@@ -1,0 +1,6 @@
+<select>
+{% for doctor in doctors %}
+<option value="{{ doctor.pk }}">{{ doctor.doctor_name }}
+</option>
+{% endfor %}
+</select>

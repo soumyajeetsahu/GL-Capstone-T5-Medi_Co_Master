@@ -158,6 +158,7 @@ var frm = $('#php_email_form');
         success:function(data){
           $(".mb-4").html('<div style="color: #fff;background: #18d26e;text-align: center;padding: 10px;font-weight: 600;"> <p> Appointment successfully booked for ' + data.name +' on '+ data.date+ '.</p></div>')
           document.getElementById("php_email_form").reset();
+          document.getElementById("id_doctor").reset();
         },
         error : function(xhr,errmsg,err) {
         alert(errmsg);
@@ -165,6 +166,26 @@ var frm = $('#php_email_form');
     }
     });
 });
+
+$("#id_department").change(function () {
+      var url = $("#php_email_form").attr("department-url");  // get the url of the `load_cities` view
+      var dept_id = $(this).val();  // get the selected country ID from the HTML input
+      $(".loading").show();
+      $("#appointment-button").prop('disabled', true);
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'Departments': dept_id       // add the country id to the GET parameters
+        },
+        success: function (data) {
+          alert(data);
+          $("#id_doctor").html(data);
+          $(".loading").hide();
+          $("#appointment-button").prop('disabled', false);
+        }
+      });
+
+    });
 </script>
 </body>
 
