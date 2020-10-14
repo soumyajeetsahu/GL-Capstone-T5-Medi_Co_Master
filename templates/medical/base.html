@@ -56,6 +56,34 @@
     </div>
   </div>
 
+    <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo mr-auto"><a href="{% url 'home' %}">Medi-Co</a></h1>
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li class="active"><a href="home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#departments">Departments</a></li>
+          <li><a href="#doctors">Doctors</a></li>
+          <li><a href="{% url 'lab_tests' %}">Labs</a></li>
+          <li><a href="#contact">Contact</a></li>
+            {% if username is not None %}
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li> {{username}}</li>
+            {% else %}
+              <li><a href="{% url 'Login' %}">Login</a></li>
+              <li><a href="{% url 'sign-up' %}">Sign-Up</a></li>
+            {% endif %}
+        </ul>
+      </nav><!-- .nav-menu -->
+      {% if username is not None %}
+        <a href="{% url 'appointment' %}" class="appointment-btn">Make an Appointment</a>
+      {% endif %}
+    </div>
+  </header><!-- End Header -->
   {% block 'body'%}
   {% endblock %}
 
@@ -168,17 +196,16 @@ var frm = $('#php_email_form');
 });
 
 $("#id_department").change(function () {
-      var url = $("#php_email_form").attr("department-url");  // get the url of the `load_cities` view
-      var dept_id = $(this).val();  // get the selected country ID from the HTML input
+      var url = $("#php_email_form").attr("department-url");
+      var dept_id = $(this).val();
       $(".loading").show();
       $("#appointment-button").prop('disabled', true);
-      $.ajax({                       // initialize an AJAX request
-        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      $.ajax({
+        url: url,
         data: {
-          'Departments': dept_id       // add the country id to the GET parameters
+          'Departments': dept_id
         },
         success: function (data) {
-          alert(data);
           $("#id_doctor").html(data);
           $(".loading").hide();
           $("#appointment-button").prop('disabled', false);
@@ -186,6 +213,10 @@ $("#id_department").change(function () {
       });
 
     });
+
+    function hideOnKeyPress() {
+            document.getElementById('error_msg').style.display = 'none';
+        }
 </script>
 </body>
 

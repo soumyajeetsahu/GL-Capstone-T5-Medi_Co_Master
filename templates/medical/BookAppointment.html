@@ -1,0 +1,60 @@
+ {% extends 'medical/base.html' %}
+{% block 'body' %}
+{% load static %}
+
+ <br>
+ <br>
+ <br>
+<!-- ======= Appointment Section ======= -->
+    <section id="appointment" class="appointment section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Make an Appointment</h2>
+        </div>
+
+        <form action="{% url 'appointment' %}" method="post" department-url="{% url 'load_doctors' %}"
+              id="php_email_form" class="php-email-form">
+          {% csrf_token %}
+          <div class="form-row">
+            <div class="col-md-4 form-group">
+              {{form.Name}}
+              <div class="validate"></div>
+            </div>
+            <div class="col-md-4 form-group">
+              {{form.email}}
+            <div class="validate"></div>
+            </div>
+            <div class="col-md-4 form-group">
+              {{form.phnumber}}
+              <div class="validate"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-4 form-group">
+            {{form.department}}
+              <div class="validate"></div>
+            </div>
+            <div class="col-md-4 form-group" >
+                {{form.doctor}}
+              <div class="validate"></div>
+            </div>
+            <div class="col-md-4 form-group">
+              {{form.appointment_date}}
+              <div class="validate"></div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="loading">Loading</div>
+              <div class="mb-4"></div>
+          </div>
+      <div  class="message-app">
+
+      </div>
+          <div class="text-center"><button type="submit" id="appointment-button">Make an Appointment</button></div>
+        </form>
+
+      </div>
+    </section><!-- End Appointment Section -->
+
+{% endblock %}

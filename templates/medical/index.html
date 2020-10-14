@@ -5,30 +5,7 @@
 
 
   <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top">
-    <div class="container d-flex align-items-center">
 
-      <h1 class="logo mr-auto"><a href="{% url 'home' %}">Medi-Co</a></h1>
-
-      <nav class="nav-menu d-none d-lg-block">
-        <ul>
-          <li class="active"><a href="home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#departments">Departments</a></li>
-          <li><a href="#doctors">Doctors</a></li>
-          <li><a href="{% url 'lab_tests' %}">Labs</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="{% url 'Login' %}">Login</a></li>
-          <li><a href="{% url 'sign-up' %}">Sign-Up</a></li>
-
-        </ul>
-      </nav><!-- .nav-menu -->
-
-      <a href="#appointment" class="appointment-btn scrollto">Make an Appointment</a>
-
-    </div>
-  </header><!-- End Header -->
 
   <section id="hero" class="d-flex align-items-center">
     <div class="container">
@@ -225,57 +202,6 @@
       </div>
     </section><!-- End Services Section -->
 
-    <!-- ======= Appointment Section ======= -->
-    <section id="appointment" class="appointment section-bg">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Make an Appointment</h2>
-        </div>
-
-        <form action="{% url 'home' %}" method="post" department-url="{% url 'load_doctors' %}"
-              id="php_email_form" class="php-email-form">
-          {% csrf_token %}
-          <div class="form-row">
-            <div class="col-md-4 form-group">
-              {{form.Name}}
-              <div class="validate"></div>
-            </div>
-            <div class="col-md-4 form-group">
-              {{form.email}}
-            <div class="validate"></div>
-            </div>
-            <div class="col-md-4 form-group">
-              {{form.phnumber}}
-              <div class="validate"></div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-4 form-group">
-            {{form.department}}
-              <div class="validate"></div>
-            </div>
-            <div class="col-md-4 form-group" >
-                {{form.doctor}}
-              <div class="validate"></div>
-            </div>
-            <div class="col-md-4 form-group">
-              {{form.appointment_date}}
-              <div class="validate"></div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <div class="loading">Loading</div>
-              <div class="mb-4"></div>
-          </div>
-      <div  class="message-app">
-
-      </div>
-          <div class="text-center"><button type="submit" id="appointment-button">Make an Appointment</button></div>
-        </form>
-
-      </div>
-    </section><!-- End Appointment Section -->
 
     <!-- ======= Departments Section ======= -->
     <section id="departments" class="departments">
@@ -411,58 +337,6 @@
             </div>
           </div>
           {% endfor %}
-
-
-<!--          <div class="col-lg-6 mt-4 mt-lg-0">-->
-<!--            <div class="member d-flex align-items-start">-->
-<!--              <div class="pic"><img src="{% static 'assets/img/doctors/doctors-2.jpg' %}" class="img-fluid" alt=""></div>-->
-<!--              <div class="member-info">-->
-<!--                <h4>Sarah Jhonson</h4>-->
-<!--                <span>Anesthesiologist</span>-->
-<!--&lt;!&ndash;                <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>&ndash;&gt;-->
-<!--                <div class="social">-->
-<!--                  <a href=""><i class="ri-twitter-fill"></i></a>-->
-<!--                  <a href=""><i class="ri-facebook-fill"></i></a>-->
-<!--                  <a href=""><i class="ri-instagram-fill"></i></a>-->
-<!--                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="col-lg-6 mt-4">-->
-<!--            <div class="member d-flex align-items-start">-->
-<!--              <div class="pic"><img src="{% static 'assets/img/doctors/doctors-3.jpg' %}" class="img-fluid" alt=""></div>-->
-<!--              <div class="member-info">-->
-<!--                <h4>William Anderson</h4>-->
-<!--                <span>Cardiology</span>-->
-<!--&lt;!&ndash;                <p>Quisquam facilis cum velit laborum corrupti fuga rerum quia</p>&ndash;&gt;-->
-<!--                <div class="social">-->
-<!--                  <a href=""><i class="ri-twitter-fill"></i></a>-->
-<!--                  <a href=""><i class="ri-facebook-fill"></i></a>-->
-<!--                  <a href=""><i class="ri-instagram-fill"></i></a>-->
-<!--                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="col-lg-6 mt-4">-->
-<!--            <div class="member d-flex align-items-start">-->
-<!--              <div class="pic"><img src="{% static 'assets/img/doctors/doctors-4.jpg' %}" class="img-fluid" alt=""></div>-->
-<!--              <div class="member-info">-->
-<!--                <h4>Amanda Jepson</h4>-->
-<!--                <span>Neurosurgeon</span>-->
-<!--&lt;!&ndash;                <p>Dolorum tempora officiis odit laborum officiis et et accusamus</p>&ndash;&gt;-->
-<!--                <div class="social">-->
-<!--                  <a href=""><i class="ri-twitter-fill"></i></a>-->
-<!--                  <a href=""><i class="ri-facebook-fill"></i></a>-->
-<!--                  <a href=""><i class="ri-instagram-fill"></i></a>-->
-<!--                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
 
         </div>
 
@@ -684,6 +558,5 @@
     </section><!-- End Contact Section -->
 
   </main><!-- End #main -->
-
 
 {% endblock %}

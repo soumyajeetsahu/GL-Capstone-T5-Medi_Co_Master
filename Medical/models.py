@@ -39,8 +39,27 @@ class Appointment(models.Model):
     department = models.ForeignKey(Departments, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE)
     appointment_date = models.DateField()
+    payment = models.CharField(max_length=100, blank=True, default='')
 
     def __str__(self):
         return "%s" % self.Name
 
 
+class UserRegistration(models.Model):
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+    )
+
+    FirstName = models.CharField(max_length=50)
+    LastName = models.CharField(max_length=50)
+    Password = models.CharField(max_length=16)
+    ConfirmPassword = models.CharField(max_length=16)
+    Email = models.EmailField()
+    PhoneNumber = models.CharField(max_length=10)
+    Gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default=None)
+
+
+class UserLogin(models.Model):
+    username = models.CharField(max_length=50)
+    password = models.CharField(max_length=16)

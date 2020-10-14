@@ -10,6 +10,13 @@
     margin-bottom: 3%;
     padding: 3%;
 }
+
+#success-note{
+    font-weight: bold;
+    color: green;
+}
+
+
 .register-left{
     text-align: center;
     color: #fff;
@@ -114,9 +121,11 @@
     color: #495057;
 }
 </style>
-
-
-<form action="{% url 'sign-up' %}" method="post" class="container register">
+<br/>
+<br/>
+<br/>
+<br/>
+<form action="{% url 'register' %}" method="post" class="container register">
     {% csrf_token %}
                 <div class="row">
                     <div class="col-md-3 register-left">
@@ -135,47 +144,58 @@
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="First Name *" value="" />
+                                            {{form.FirstName}}
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Last Name *" value="" />
+                                            {{form.LastName}}
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="Password *" value="" />
+                                            {{form.Password}}
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="maxl">
-                                                <label class="radio inline">
-                                                    <input type="radio" name="gender" value="male" checked>
-                                                    <span> Male </span>
+                                            <div class="maxl" >
+
+                                                {% for radio in form.Gender %}
+                                                <label for="{{ radio.id_for_label }}">
+                                                    {{ radio.choice_label }}
+                                                    <span class="radio">{{ radio.tag }}</span>
                                                 </label>
-                                                <label class="radio inline">
-                                                    <input type="radio" name="gender" value="female">
-                                                    <span>Female </span>
-                                                </label>
+                                                {% endfor %}
                                             </div>
                                         </div>
-                                    </div>
+                                        {% if success_note == "Registration Successful. Please Login" %}
+
+                                            <div class="form-group" id="success-note">
+                                                {{success_note}}
+                                            </div>
+                                            <div> Need to register another user?
+                                                    <a href="{% url 'sign-up' %}" > Signup.</a>
+                                            </div>
+                                        {% endif %}
+                                    </div >
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" placeholder="Your Email *" value="" />
+                                            {{form.Email}}
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" minlength="10" maxlength="10" name="txtEmpPhone" class="form-control" placeholder="Your Phone *" value="" />
+                                            {{form.PhoneNumber}}
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control"  placeholder="Confirm Password *" value="" />
+                                            {{form.ConfirmPassword}}
                                         </div>
-                                        <input type="submit" class="btnRegister"  value="Register"/>
+                                        {% if success_note != "Registration Successful. Please Login" %}
+                                            <input type="submit" class="btnRegister"  value="Register"/>
+                                        {% endif %}
                                     </div>
-                                </div>
+                                    </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
-            </form>
+</form>
 
 
 {% endblock %}

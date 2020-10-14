@@ -69,19 +69,23 @@
     <!-- Custom styles for this template -->
     <link href="signin.css" rel="stylesheet">
   <div class="text-center login-body">
-    <form class="form-signin">
+    <form action="{% url 'login_post' %}" method="post" class="form-signin" id="login_form" onkeypress="hideOnKeyPress();">
+        {% csrf_token %}
   <img class="mb-4" src="{% static 'assets/img/login-img.png' %}" alt="" width="72" height="72">
   <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-  <label for="inputEmail" class="sr-only">Email address</label>
-  <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-  <label for="inputPassword" class="sr-only">Password</label>
-  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <label style="color:red" id="error_msg">{{error_note}}</label>
+<!--  <label for="inputEmail" class="sr-only">Email address</label>-->
+        {{form.username}}
+        {{form.password}}
+<!--  <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>-->
+<!--  <label for="inputPassword" class="sr-only">Password</label>-->
+<!--  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>-->
   <div class="checkbox mb-3">
     <label>
       <input type="checkbox" value="remember-me"> Remember me
     </label>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  <button id="sign-in-button" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <br>
         <label>
           <a>Not an member? </a>

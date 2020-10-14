@@ -1,5 +1,4 @@
 from django import forms
-from Medical.enum import Department
 from Medical.models import Appointment
 
 
