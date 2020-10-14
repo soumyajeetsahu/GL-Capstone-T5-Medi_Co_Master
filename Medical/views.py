@@ -130,13 +130,12 @@ def process_qrcode(request):
         s = app.Name + " " + app.email + " " + app.appointment_date.strftime('%m/%d/%Y')
         url = pyqrcode.create(s)
         filename = app.phnumber+".svg"
-        svgfile= filename
-        url.svg(svgfile, scale=8)
+        url.svg(filename, scale=8)
         fs = FileSystemStorage()
-        file_url = fs.url(svgfile)
+        file_url = fs.url(filename)
         print(file_url)
         s3_client = boto3.client('s3')
-        response = s3_client.upload_file(svgfile, bucket, svgfile)
+        response = s3_client.upload_file(filename, bucket, filename)
         print(response)
     if request.session.has_key('User_Name'):
         UserName = request.session['User_Name']
