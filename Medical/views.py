@@ -1,86 +1,30 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
-from Medical.models import Doctors, UserRegistration, Appointment
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from django.contrib.auth.models import User
+from allauth.account.views import SignupView, LoginView
+from Medical.models import Doctors, UserRegistration, Appointment, OrderItem, Order
 from Medical.static.forms.appointment import AppointmentForm
 from Medical.static.forms.register import RegistrationForm, LoginForm
 import boto3
 import pyqrcode
 import png
+import os
 from pyqrcode import QRCode
+from .models import LabTests
+from django.views.generic import ListView, DetailView, View
+from django.db.models import Case, Value, When
 
 
 def home_view(request):
-    if request.session.has_key('User_Name'):
-        UserName = request.session['User_Name']
-    else:
-        UserName = None
-
     form = AppointmentForm()
     doctors = Doctors.objects.order_by('doctor_name')
-    return render(request, 'medical/index.html', {'form': form, 'doctors': doctors, 'username': UserName})
-
-
-def lab_tests(request):
-    if request.session.has_key('User_Name'):
-        UserName = request.session['User_Name']
-    else:
-        UserName = None
-    return render(request, 'medical/labtests.html', {'username': UserName})
-
-
-def login_get(request):
-    form = LoginForm()
-    return render(request, 'medical/Login.html', {'form': form})
-
-
-def registration(request):
-    form = RegistrationForm()
-    return render(request, 'medical/registration.html', {'form': form})
-
-
-def registration_post(request):
-    success_note = "Get"
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            # form = RegistrationForm()
-            success_note = "Registration Successful. Please Login"
-            return render(request, 'medical/registration.html', {'success_note': success_note})
-        else:
-            form = RegistrationForm()
-            success_note = "Error loading"
-    else:
-        form = RegistrationForm()
-    return render(request, 'medical/registration.html', {'form': form, 'success_note': success_note})
-
-
-def login_post(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        username = request.POST['username']
-        password = request.POST['password']
-        # user = auth.authenticate(username=username, password=password)
-        print(username)
-        user = UserRegistration.objects.filter(Email=username)
-        UserName = None
-        user_count = (user.count())
-        for us in user:
-            UserName = us.FirstName
-        if user_count != 0:
-            request.session['User_Name'] = username
-            request.session.set_expiry(300)
-            form = AppointmentForm()
-            doctors = Doctors.objects.order_by('doctor_name')
-            return render(request, 'medical/index.html', {'form': form, 'doctors': doctors, 'username': UserName})
-        else:
-            error_note = "Username/Password Invalid."
-            form = LoginForm()
-            return render(request, 'medical/Login.html', {'form': form, 'error_note': error_note})
-    else:
-        form = LoginForm()
-    return render(request, 'medical/Login.html', {'form': form})
+    return render(request, 'medical/index.html', {'form': form, 'doctors': doctors})
 
 
 def load_doctors(request):
@@ -89,18 +33,6 @@ def load_doctors(request):
     doctors = Doctors.objects.filter(department_id=dept_id).order_by('doctor_name')
     # return JsonResponse(doctors, safe=False)
     return render(request, 'medical/load_doctors.html', {'doctors': doctors})
-
-
-def logout(request):
-    try:
-        if request.session.has_key('User_Name'):
-            del request.session['User_Name']
-            request.session.flush()
-    except KeyError:
-        pass
-    form = AppointmentForm()
-    doctors = Doctors.objects.order_by('doctor_name')
-    return render(request, 'medical/index.html', {'form': form, 'doctors': doctors})
 
 
 def appointment(request):
@@ -116,11 +48,9 @@ def appointment(request):
             }
             return JsonResponse(responseData, safe=False)
     else:
-        if request.session.has_key('User_Name'):
-            UserName = request.session['User_Name']
         form = AppointmentForm()
         doctors = Doctors.objects.order_by('doctor_name')
-        return render(request, 'medical/BookAppointment.html', {'form': form, 'doctors': doctors, 'username': UserName})
+        return render(request, 'medical/BookAppointment.html', {'form': form, 'doctors': doctors})
 
 
 def process_qrcode(request):
@@ -129,16 +59,177 @@ def process_qrcode(request):
     for app in appointments:
         s = app.Name + " " + app.email + " " + app.appointment_date.strftime('%m/%d/%Y')
         url = pyqrcode.create(s)
-        filename = app.phnumber+".svg"
-        url.svg(filename, scale=8)
+        filename = "AppointmentQrcode_" + str(app.id) + ".png"
+        url.png(filename, scale=8)
         fs = FileSystemStorage()
         file_url = fs.url(filename)
         print(file_url)
         s3_client = boto3.client('s3')
         response = s3_client.upload_file(filename, bucket, filename)
-        print(response)
-    if request.session.has_key('User_Name'):
-        UserName = request.session['User_Name']
+        if os.path.exists(file_url):
+            os.remove(file_url)
+        else:
+            print("The file does not exist")
+        # FileSystemStorage.delete(file_url)
+    return render(request, 'medical/request_processing.html')
+
+
+def process_qrcode_lab(request):
+    userdata = User.objects.get(username=request.user)
+    # print(userdata.email)
+    # order_qs = Order.objects.filter(user=request.user, ordered=False)
+    # Order.objects.filter(user=request.user).update(ordered=True)
+    bucket = 'medico-lamda-bucket'
+    s = userdata.email
+    url = pyqrcode.create(s)
+    filename = "Qrcode_" + str(userdata.id) + ".png"
+    url.png(filename, scale=8)
+    fs = FileSystemStorage()
+    file_url = fs.url(filename)
+    print(file_url)
+    s3_client = boto3.client('s3')
+    response = s3_client.upload_file(filename, bucket, filename)
+    if os.path.exists(file_url):
+        os.remove(file_url)
     else:
-        UserName = None
-    return render(request, 'medical/labtests.html', {'username': UserName})
+        print("The file does not exist")
+    # FileSystemStorage.delete(file_url)
+    return render(request, 'medical/request_processing.html')
+
+
+class LabLists(ListView):
+    model = LabTests
+    template_name = "medical/labtests.html"
+
+
+class LabDetailView(DetailView):
+    model = LabTests
+    template_name = "medical/lab_details.html"
+
+
+@login_required
+def add_to_cart(request, slug):
+    item = get_object_or_404(LabTests, slug=slug)
+    order_item, created = OrderItem.objects.get_or_create(
+        item=item,
+        user=request.user,
+        ordered=False
+    )
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        # check if the order item is in the order
+        if order.items.filter(item__slug=item.slug).exists():
+            order_item.quantity += 1
+            order_item.save()
+            messages.info(request, "This item quantity was updated.")
+            return redirect("order-summary")
+        else:
+            order.items.add(order_item)
+            messages.info(request, "This item was added to your cart.")
+            return redirect("order-summary")
+    else:
+        ordered_date = timezone.now()
+        order = Order.objects.create(
+            user=request.user, ordered_date=ordered_date)
+        order.items.add(order_item)
+        messages.info(request, "This item was added to your cart.")
+        return redirect("order-summary")
+
+
+@login_required
+def remove_from_cart(request, slug):
+    item = get_object_or_404(LabTests, slug=slug)
+    order_qs = Order.objects.filter(
+        user=request.user,
+        ordered=False
+    )
+    if order_qs.exists():
+        order = order_qs[0]
+        # check if the order item is in the order
+        if order.items.filter(item__slug=item.slug).exists():
+            order_item = OrderItem.objects.filter(
+                item=item,
+                user=request.user,
+                ordered=False
+            )[0]
+            order.items.remove(order_item)
+            order_item.delete()
+            messages.info(request, "This item was removed from your cart.")
+            return redirect("order-summary")
+        else:
+            messages.info(request, "This item was not in your cart")
+            return redirect("test_detail", slug=slug)
+    else:
+        messages.info(request, "You do not have an active order")
+        return redirect("test_detail", slug=slug)
+
+
+class OrderSummaryView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'object': order
+            }
+            return render(self.request, 'medical/order-summary.html', context)
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "You do not have an active order")
+            return redirect("/")
+
+
+@login_required
+def remove_single_item_from_cart(request, slug):
+    item = get_object_or_404(LabTests, slug=slug)
+    order_qs = Order.objects.filter(
+        user=request.user,
+        ordered=False
+    )
+    if order_qs.exists():
+        order = order_qs[0]
+        # check if the order item is in the order
+        if order.items.filter(item__slug=item.slug).exists():
+            order_item = OrderItem.objects.filter(
+                item=item,
+                user=request.user,
+                ordered=False
+            )[0]
+            if order_item.quantity > 1:
+                order_item.quantity -= 1
+                order_item.save()
+            else:
+                order.items.remove(order_item)
+            messages.info(request, "This item quantity was updated.")
+            return redirect("order-summary")
+        else:
+            messages.info(request, "This item was not in your cart")
+            return redirect("test_detail", slug=slug)
+    else:
+        messages.info(request, "You do not have an active order")
+        return redirect("test_detail", slug=slug)
+
+
+class CheckOutView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'object': order
+            }
+            return render(self.request, 'medical/checkout.html', context)
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "You do not have an active order")
+            return redirect("/")
+
+
+class Check_OutView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        try:
+            # order = Order.objects.get(user=self.request.user, ordered=False)
+            # context = {
+            #     'object': order
+            # }
+            return render(self.request, 'medical/check_out.html')
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "You do not have an active order")
+            return redirect("/")

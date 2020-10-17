@@ -51,7 +51,11 @@
       <div  class="message-app">
 
       </div>
-          <div class="text-center"><button type="submit" id="appointment-button">Make an Appointment</button></div>
+<!--          <button type="submit" id="appointment-button">Make an Appointment</button>-->
+          <div class="text-center">
+          <a class='btn btn-warning float-right ml-2' id="doc-payment" style="display:none" href="{% url 'check_out' %}">Proceed to Payment</a>
+          <button type="submit" id="appointment-button">Make an Appointment</button>
+          </div>
         </form>
 
       </div>

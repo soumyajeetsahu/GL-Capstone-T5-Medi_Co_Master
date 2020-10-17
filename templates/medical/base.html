@@ -31,10 +31,22 @@
   <!-- Template Main CSS File -->
   <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
   <link href="{% static 'assets/css/album.css' %}" rel="stylesheet">
+  <style>
+  </style>
 </head>
 
-<body>
-
+<body class="bg-light">
+<div id="contents">
+{% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+    {% endif %}
   <!-- ======= Top Bar ======= -->
   <div id="topbar" class="d-none d-lg-flex align-items-center fixed-top">
     <div class="container d-flex">
@@ -56,10 +68,10 @@
     </div>
   </div>
 
-    <header id="header" class="fixed-top">
+    <header id="header" class="fixed-top" style="padding: 5px 0;">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo mr-auto"><a href="{% url 'home' %}">Medi-Co</a></h1>
+      <h4 class="logo mr-auto"><a href="{% url 'home' %}">Medi-Co</a></h4>
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
@@ -70,20 +82,27 @@
           <li><a href="#doctors">Doctors</a></li>
           <li><a href="{% url 'lab_tests' %}">Labs</a></li>
           <li><a href="#contact">Contact</a></li>
-            {% if username is not None %}
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-                <li> {{username}}</li>
+          {% if request.user.is_authenticated %}
+                <li><a href="{% url 'account_logout' %}">Logout</a></li>
+          <li class="nav-item">
+            <a href="{% url 'order-summary' %}" class="nav-link waves-effect">
+              <span class="badge badge-primary z-depth-5 mr-1"> {{ request.user }} </span>
+              <i class="glyphicon glyphicon-shopping-cart"></i>
+              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+            </a>
+          </li>
             {% else %}
-              <li><a href="{% url 'Login' %}">Login</a></li>
-              <li><a href="{% url 'sign-up' %}">Sign-Up</a></li>
+              <li><a href="{% url 'account_login' %}">Login</a></li>
+              <li><a href="{% url 'account_signup' %}">Sign-Up</a></li>
             {% endif %}
         </ul>
       </nav><!-- .nav-menu -->
-      {% if username is not None %}
+      {% if request.user.is_authenticated %}
         <a href="{% url 'appointment' %}" class="appointment-btn">Make an Appointment</a>
       {% endif %}
     </div>
   </header><!-- End Header -->
+  <br>
   {% block 'body'%}
   {% endblock %}
 
@@ -171,7 +190,9 @@
   <script src="{% static 'assets/vendor/counterup/counterup.min.js' %}"></script>
   <script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js' %}"></script>
   <script src="{% static 'assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
-
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
   <!-- Template Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
   <script type="text/javascript">
@@ -186,7 +207,8 @@ var frm = $('#php_email_form');
         success:function(data){
           $(".mb-4").html('<div style="color: #fff;background: #18d26e;text-align: center;padding: 10px;font-weight: 600;"> <p> Appointment successfully booked for ' + data.name +' on '+ data.date+ '.</p></div>')
           document.getElementById("php_email_form").reset();
-          document.getElementById("id_doctor").reset();
+          $("#doc-payment").show();
+          $("#appointment-button").hide();
         },
         error : function(xhr,errmsg,err) {
         alert(errmsg);
@@ -208,6 +230,7 @@ $("#id_department").change(function () {
         success: function (data) {
           $("#id_doctor").html(data);
           $(".loading").hide();
+
           $("#appointment-button").prop('disabled', false);
         }
       });
@@ -217,7 +240,12 @@ $("#id_department").change(function () {
     function hideOnKeyPress() {
             document.getElementById('error_msg').style.display = 'none';
         }
+
+
+
 </script>
+
+</div>
 </body>
 
 </html>

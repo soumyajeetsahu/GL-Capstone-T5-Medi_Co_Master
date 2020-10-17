@@ -124,7 +124,8 @@ img {
 }
 
 </style>
-
+<br>
+<br>
   <section id="labs" class="labs" >
       <div class="container">
 
@@ -133,66 +134,68 @@ img {
            </div>
 
         <div class="row equal">
-
+            {% for test in object_list %}
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="member d-flex align-items-start">
               <div class="pic">
                 <img src="{% static 'assets/img/labs/full-body-checkup.jpg' %}" class="img-fluid" alt=""></div>
               <div class="member-info">
-                <h4>Complete Health Check-Up</h4>
-                <span>47 essential body parameters like Thyroid, Liver, Kidney, Blood, Sugar, Cholesterol.</span>
-                <div class="btn-labs">
-                <button type="button" class="btn btn-primary btn-sm"> View </button>
-                  <small class="text-muted">1099</small>
+                <h4><a href="{{ test.get_absolute_url }}">{{test.title}}</a></h4>
+                <span>{{test.details}}}</span>
+<!--                <h4>Complete Health Check-Up</h4>-->
+<!--                <span>47 essential body parameters like Thyroid, Liver, Kidney, Blood, Sugar, Cholesterol.</span>-->
+                <div class="btn-labs" >
+<!--                <button action="" type="button" class="btn btn-primary btn-sm update-cart"> View </button>-->
+                  <small class="text-muted">{{test.price}}</small>
                 </div>
               </div>
             </div>
           </div>
+           {% endfor %}
+<!--          <div class="col-md-6 col-sm-6 col-xs-12">-->
+<!--            <div class="member d-flex align-items-start">-->
+<!--              <div class="pic"><img src="{% static 'assets/img/labs/lipid-blood-test.png' %}" class="img-fluid" alt=""></div>-->
+<!--              <div class="member-info">-->
+<!--                <h4>Lipid profile</h4>-->
+<!--                <span>Blood tests that serves as an initial screening tool-->
+<!--                  for abnormalities in lipids, such as cholesterol and triglycerides</span>-->
+<!--                <div class="btn-labs">-->
+<!--                <button type="button" class="btn btn-primary btn-sm"> View </button>-->
+<!--                  <small class="text-muted">499</small>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
 
-          <div class="col-md-6 col-sm-6 col-xs-12">
-            <div class="member d-flex align-items-start">
-              <div class="pic"><img src="{% static 'assets/img/labs/lipid-blood-test.png' %}" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Lipid profile</h4>
-                <span>Blood tests that serves as an initial screening tool
-                  for abnormalities in lipids, such as cholesterol and triglycerides</span>
-                <div class="btn-labs">
-                <button type="button" class="btn btn-primary btn-sm"> View </button>
-                  <small class="text-muted">499</small>
-                </div>
-              </div>
-            </div>
-          </div>
+<!--          <div class="col-md-6 col-sm-6 col-xs-12">-->
+<!--            <div class="member d-flex align-items-start">-->
+<!--              <div class="pic"><img src="{% static 'assets/img/labs/ecg.png' %}" class="img-fluid" alt=""></div>-->
+<!--              <div class="member-info">-->
+<!--                <h4>Electrocardiography</h4>-->
+<!--                <span>An electrocardiogram records the electrical signal from your heart to check for different heart conditions. </span>-->
+<!--                <div class="btn-labs">-->
+<!--                <button type="button" class="btn btn-primary btn-sm"> View </button>-->
+<!--                  <small class="text-muted">499</small>-->
+<!--                </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
 
-          <div class="col-md-6 col-sm-6 col-xs-12">
-            <div class="member d-flex align-items-start">
-              <div class="pic"><img src="{% static 'assets/img/labs/ecg.png' %}" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Electrocardiography</h4>
-                <span>An electrocardiogram records the electrical signal from your heart to check for different heart conditions. </span>
-                <div class="btn-labs">
-                <button type="button" class="btn btn-primary btn-sm"> View </button>
-                  <small class="text-muted">499</small>
-                </div>
-                </div>
-              </div>
-            </div>
-
-          <div class="col-md-6 col-sm-6 col-xs-12">
-            <div class="member d-flex align-items-start">
-              <div class="pic">
-                <img src="{% static 'assets/img/labs/liver-function-test.png' %}" class="img-fluid" alt=""></div>
-              <div class="member-info">
-                <h4>Liver Function Test</h4>
-                <span>Provide information about the state of a patient's liver.
-                   Includes prothrombin time,albumin,bilirubin</span>
-                <div class="btn-labs">
-                <button type="button" class="btn btn-primary btn-sm"> View </button>
-                  <small class="text-muted">599</small>
-                </div>
-                </div>
-              </div>
-            </div>
+<!--          <div class="col-md-6 col-sm-6 col-xs-12">-->
+<!--            <div class="member d-flex align-items-start">-->
+<!--              <div class="pic">-->
+<!--                <img src="{% static 'assets/img/labs/liver-function-test.png' %}" class="img-fluid" alt=""></div>-->
+<!--              <div class="member-info">-->
+<!--                <h4>Liver Function Test</h4>-->
+<!--                <span>Provide information about the state of a patient's liver.-->
+<!--                   Includes prothrombin time,albumin,bilirubin</span>-->
+<!--                <div class="btn-labs">-->
+<!--                <button type="button" class="btn btn-primary btn-sm"> View </button>-->
+<!--                  <small class="text-muted">599</small>-->
+<!--                </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
 
           </div>
 

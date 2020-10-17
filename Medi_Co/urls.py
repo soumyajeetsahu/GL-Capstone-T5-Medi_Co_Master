@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from Medical import views
 from django.conf import settings
@@ -22,16 +22,22 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+
     path('', views.home_view, name='home'),
     path('home', views.home_view, name='home'),
-    path('lab_tests', views.lab_tests, name='lab_tests'),
+    path('lab_tests', views.LabLists.as_view(), name='lab_tests'),
+    path('test_detail/<slug>/', views.LabDetailView.as_view(), name='test_detail'),
+    path('add-to-cart/<slug>/', views.add_to_cart, name='add-to-cart'),
+    path('remove-from-cart/<slug>/', views.remove_from_cart, name='remove-from-cart'),
+    path('remove-item-from-cart/<slug>/', views.remove_single_item_from_cart,
+         name='remove-single-item-from-cart'),
+    path('order-summary/', views.OrderSummaryView.as_view(), name='order-summary'),
     path('appointment', views.appointment, name='appointment'),
-    path('Login', views.login_get, name='Login'),
-    path('logout', views.logout, name='logout'),
-    path('sign-up', views.registration, name='sign-up'),
-    path('sign-up-post', views.registration_post, name='register'),
-    path('login_post', views.login_post, name='login_post'),
     path('load_doctors', views.load_doctors, name='load_doctors'),
-    path('process_qrcode', views.process_qrcode, name='process_qrcode')
+    path('process_qrcode', views.process_qrcode, name='process_qrcode'),
+    path('process_qrcode_lab', views.process_qrcode_lab, name='process_qrcode_lab'),
+    path('checkout', views.CheckOutView.as_view(), name='checkout'),
+    path('check_out', views.Check_OutView.as_view(), name='check_out'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
