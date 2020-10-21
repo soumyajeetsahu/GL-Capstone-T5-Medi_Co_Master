@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /manage.py
-    destination: /var/www/html/
+    destination: /var/www/
 hooks:
   BeforeInstall:
     - location: /requirement
