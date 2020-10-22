@@ -1,0 +1,38 @@
+version: 0.2
+
+env:
+  variables:
+
+
+phases:
+  pre_build:
+    commands:
+      - echo "Before running tests"
+      - sudo ls /root
+      - sudo apt install python3-venv
+      - python3 -m venv env
+      - source env/bin/activate
+      - pip install -r requirement
+      - sudo apt-get install python3.6-dev
+      - pip install mysqlclient
+      - sudo ./server_configs/scripts/add_mysql.sh
+      - sudo apt-get install -y mysql-server
+      - service mysql start
+      - mysql -hlocalhost -uroot -ppassword -P3306 -e "show databases;"
+  build:
+    commands:
+      - echo "Running all unit tests"
+      - python manage.py test
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - '**/*'
+cache:
+  paths:
+    - '/root/.cache/pip/**/*'
+    - '/var/cache/apt/archives/**/*'
+    - '/var/lib/apt/lists/**/*'
+    - '/etc/apt/sources.list.d/mysql.list'
+    - '/etc/apt/sources.list'

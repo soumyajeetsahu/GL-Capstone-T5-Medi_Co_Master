@@ -61,14 +61,12 @@ pycparser==2.20
 PyJWT==1.7.1
 PyMySQL==0.10.1
 PyPDF2==1.26.0
-pypiwin32==223
 pypng==0.0.20
 PyQRCode==1.2.1
 pyrsistent==0.16.0
 python-dateutil==2.8.0
 python3-openid==3.2.0
 pytz==2018.5
-pywin32==228
 PyYAML==5.3.1
 regex==2020.7.14
 reportlab==3.5.47
