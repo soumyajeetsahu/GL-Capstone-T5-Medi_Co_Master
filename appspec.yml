@@ -3,3 +3,8 @@ os: linux
 files:
   - source: /
     destination: /var/www/html/
+hooks:
+ ApplicationStart:
+    - location: /dependency.sh
+      timeout: 300
+      runas: root
