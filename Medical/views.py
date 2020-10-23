@@ -29,7 +29,7 @@ def home_view(request):
 
 def load_doctors(request):
     dept_id = request.GET.get('Departments')
-    print(dept_id)
+    #print(dept_id)
     doctors = Doctors.objects.filter(department_id=dept_id).order_by('doctor_name')
     # return JsonResponse(doctors, safe=False)
     return render(request, 'medical/load_doctors.html', {'doctors': doctors})
@@ -63,13 +63,13 @@ def process_qrcode(request):
         url.png(filename, scale=8)
         fs = FileSystemStorage()
         file_url = fs.url(filename)
-        print(file_url)
+        #print(file_url)
         s3_client = boto3.client('s3')
         response = s3_client.upload_file(filename, bucket, filename)
         if os.path.exists(file_url):
             os.remove(file_url)
         else:
-            print("The file does not exist")
+            #print("The file does not exist")
         # FileSystemStorage.delete(file_url)
     return render(request, 'medical/request_processing.html')
 
@@ -86,13 +86,13 @@ def process_qrcode_lab(request):
     url.png(filename, scale=8)
     fs = FileSystemStorage()
     file_url = fs.url(filename)
-    print(file_url)
+    #print(file_url)
     s3_client = boto3.client('s3')
     response = s3_client.upload_file(filename, bucket, filename)
     if os.path.exists(file_url):
         os.remove(file_url)
     else:
-        print("The file does not exist")
+        #print("The file does not exist")
     # FileSystemStorage.delete(file_url)
     return render(request, 'medical/request_processing.html')
 
