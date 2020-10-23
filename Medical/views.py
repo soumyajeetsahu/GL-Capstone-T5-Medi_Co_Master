@@ -65,10 +65,6 @@ def process_qrcode(request):
         file_url = fs.url(filename)
         s3_client = boto3.client('s3')
         response = s3_client.upload_file(filename, bucket, filename)
-        if os.path.exists(file_url):
-            
-        else:
-        # FileSystemStorage.delete(file_url)
     return render(request, 'medical/request_processing.html')
 
 
@@ -85,10 +81,6 @@ def process_qrcode_lab(request):
     file_url = fs.url(filename)
     s3_client = boto3.client('s3')
     response = s3_client.upload_file(filename, bucket, filename)
-    if os.path.exists(file_url):
-        
-    else:
-    # FileSystemStorage.delete(file_url)
     return render(request, 'medical/request_processing.html')
 
 
