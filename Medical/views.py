@@ -63,20 +63,17 @@ def process_qrcode(request):
         url.png(filename, scale=8)
         fs = FileSystemStorage()
         file_url = fs.url(filename)
-        #print(file_url)
         s3_client = boto3.client('s3')
         response = s3_client.upload_file(filename, bucket, filename)
         if os.path.exists(file_url):
             os.remove(file_url)
         else:
-            #print("The file does not exist")
         # FileSystemStorage.delete(file_url)
     return render(request, 'medical/request_processing.html')
 
 
 def process_qrcode_lab(request):
     userdata = User.objects.get(username=request.user)
-    # print(userdata.email)
     # order_qs = Order.objects.filter(user=request.user, ordered=False)
     # Order.objects.filter(user=request.user).update(ordered=True)
     bucket = 'medico-lamda-bucket'
@@ -86,13 +83,11 @@ def process_qrcode_lab(request):
     url.png(filename, scale=8)
     fs = FileSystemStorage()
     file_url = fs.url(filename)
-    #print(file_url)
     s3_client = boto3.client('s3')
     response = s3_client.upload_file(filename, bucket, filename)
     if os.path.exists(file_url):
         os.remove(file_url)
     else:
-        #print("The file does not exist")
     # FileSystemStorage.delete(file_url)
     return render(request, 'medical/request_processing.html')
 
